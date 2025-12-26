@@ -38,6 +38,11 @@ app.use(cors({
 
 
 app.use(express.json());
+const Arifpay = require("arifpay-express-plugin");
+const arifpay = new Arifpay (
+  process.env.API_KEY ,
+  "2026-02-01T03:45:27" // e.g., "2027-02-01T03:45:27"
+);
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -64,6 +69,46 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ error: 'Invalid token' });
   }
 };
+
+// const paymentInfo = {
+//   cancelUrl: "https://example.com/cancel",
+//   errorUrl: "http://example.com/error",
+//   notifyUrl: "https://gateway.arifpay.org/test/callback",
+//   successUrl: "http://example.com/success",
+//   phone: "251938756685",
+//   amount: 100.00,
+//   nonce: "unique-express-nonce-789",
+//   paymentMethods: ["TELEBIRR"],
+//   items: [
+//       {
+//           name: "Express Product",
+//           quantity: 1,
+//           price: 100.00
+//       }
+//   ]
+// };
+
+// Example Express Route Handler
+app.post('/api/pay', async (req, res) => {
+  try {
+    const response = await arifpay.Make_payment(req);
+    
+    // The response is a JSON string, parse it
+    const result = JSON.parse(response); 
+
+    if (!result.error && result.data && result.data.paymentUrl) {
+      // Success: Redirect the user to the payment URL
+      return res.redirect(result.data.paymentUrl); 
+    } else {
+      // Error handling
+      console.error("ArifPay API Error:", result.msg);
+      return res.redirect(req.body.errorUrl); 
+    }
+  } catch (e) {
+    console.error("Unexpected Error:", e);
+    return res.redirect(req.body.errorUrl);
+  }
+});
 
 // Create request endpoint
 app.post("/requests", verifyToken, async (req: Request, res: Response) => {
