@@ -1,5 +1,4 @@
-/venv
-/backend
-/.vscode
-/.continue
-*./venv
+ /venv/
+/backend/
+/.vscode/
+/.continue/
