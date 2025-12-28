@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -6,8 +7,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
-
+from rest_framework.decorators import permission_classes
 from .serializers import LoginSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['POST'])
@@ -36,3 +38,21 @@ def LoginView(request):
         "refresh": str(refresh),
         "access": str(refresh.access_token),
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def Dashboard(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({
+        "message": f"Hello {request.user.username}"
+    })
+
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def dashboard(request):
+#     return Response({
+#         "message": f"Hello {request.user.username}"
+#     })
