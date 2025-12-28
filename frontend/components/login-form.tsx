@@ -12,14 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/accounts/login/";
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ export function LoginForm({
       // const res = await fetch("http://localhost:5000/prisma/login", {
       const res = await fetch(
         // "https://attendance-management-ynfm.onrender.com/prisma/login",
-        `${API_URL}/prisma/login`,
+        `${API_URL}`,
         {
           method: "POST",
           headers: {
@@ -59,7 +60,10 @@ export function LoginForm({
       }
 
       // Store token and user data
-      localStorage.setItem("token", data.token);
+      // localStorage.setItem("token", data.token);
+      // localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // Redirect based on role
@@ -93,12 +97,12 @@ export function LoginForm({
 
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    value={formData.email}
+                    id="username"
+                    type="text"
+                    placeholder="your username"
+                    value={formData.username}
                     onChange={handleInputChange}
                     required
                   />

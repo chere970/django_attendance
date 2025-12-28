@@ -13,9 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { request } from "http";
+import { json } from "stream/consumers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/accounts/signup/";
+// const DJANGO_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://localhost:8000";
 export function SignupForm({
   className,
   ...props
@@ -24,13 +27,13 @@ export function SignupForm({
   const [formData, setFormData] = useState({
     name: "",
     username: "",
-    employeeId: "",
+    employee_id: "",
     email: "",
     password: "",
     role: "employee",
     department: "",
   });
-  const [photo, setPhoto] = useState<File | null>(null);
+  // const [photo, setPhoto] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -45,11 +48,11 @@ export function SignupForm({
     }));
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setPhoto(e.target.files[0]);
-    }
-  };
+  // const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     setPhoto(e.target.files[0]);
+  //   }
+  // };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,18 +60,21 @@ export function SignupForm({
     setError("");
 
     try {
-      const form = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        form.append(key, value);
-      });
-      if (photo) form.append("photo", photo);
+      // const form = new FormData();
+      // Object.entries(formData).forEach(([key, value]) => {
+      //   form.append(key, value);
+      // });
+      // if (photo) form.append("photo", photo);
 
       const res = await fetch(
         // "https://attendance-management-ynfm.onrender.com/prisma/signup",
-        `${API_URL}/prisma/signup`,
+        `${API_URL}`,
         {
           method: "POST",
-          body: form, // ✅ send FormData (not JSON)
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(formData), // ✅ send FormData (not JSON)
         }
       );
 
@@ -79,7 +85,8 @@ export function SignupForm({
       }
 
       // store token & user
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // redirect
@@ -103,7 +110,8 @@ export function SignupForm({
           <CardDescription>Sign up for a new account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignup} encType="multipart/form-data">
+          <form onSubmit={handleSignup}>
+            {/* <form onSubmit={handleSignup} encType="multipart/form-data"></form> */}
             <div className="grid gap-6">
               {error && (
                 <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
@@ -135,11 +143,11 @@ export function SignupForm({
                 </div>
 
                 <div className="grid gap-3">
-                  <Label htmlFor="employeeId">Employee ID</Label>
+                  <Label htmlFor="employee_id">Employee ID</Label>
                   <Input
-                    id="employeeId"
+                    id="employee_id"
                     type="text"
-                    value={formData.employeeId}
+                    value={formData.employee_id}
                     onChange={handleInputChange}
                     required
                   />
@@ -193,7 +201,7 @@ export function SignupForm({
                 </div>
 
                 {/* ✅ Photo upload */}
-                <div className="grid gap-3">
+                {/* <div className="grid gap-3">
                   <Label htmlFor="photo">Profile Photo</Label>
                   <Input
                     id="photo"
@@ -201,7 +209,7 @@ export function SignupForm({
                     accept="image/*"
                     onChange={handlePhotoChange}
                   />
-                </div>
+                </div> */}
 
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? "Creating Account..." : "Create Account"}

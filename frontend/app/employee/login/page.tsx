@@ -16,8 +16,8 @@ import { Label } from "@/components/ui/label";
 const LoginPage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    email: "",
-    employeeId: "",
+    username: "",
+    // employeeId: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/prisma/login", {
+      const res = await fetch("http://127.0.0.1:8000/accounts/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +111,17 @@ const LoginPage = () => {
               )}
 
               <div className="space-y-4">
-                <div>
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="your username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  required
+                />
+
+                {/* <div>
                   <Label
                     htmlFor="email"
                     className="text-sm font-medium text-gray-700"
@@ -119,17 +129,17 @@ const LoginPage = () => {
                     Email Address
                   </Label>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
+                    id="username"
+                    type="text"
+                    placeholder="Enter your username"
+                    value={formData.username}
                     onChange={handleInputChange}
                     required
                     className="mt-1"
                   />
-                </div>
+                </div> */}
 
-                <div>
+                {/* <div>
                   <Label
                     htmlFor="email"
                     className="text-sm font-medium text-gray-700"
@@ -145,7 +155,7 @@ const LoginPage = () => {
                     required
                     className="mt-1"
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <div className="flex items-center justify-between">
