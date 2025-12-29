@@ -22,3 +22,5 @@ class User(AbstractUser):
     department = models.CharField(max_length=100, null=True)
     password = models.CharField(max_length=200)
     # profilephoto = models.ImageField(null=True, blank=True, upload_to='profiles/', default="profiles/default.png")
+    fingerprint_id = models.CharField(
+        max_length=100, unique=True, null=True, blank=True)

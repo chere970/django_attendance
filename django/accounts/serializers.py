@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
 
         fields = ['id', 'name', 'username', 'employee_id', 'email',
-                  'role', 'department', 'password']
+                  'role', 'department', 'password', 'fingerprint_id']
 
     def create(self, validated_data):
         password = validated_data.pop('password')

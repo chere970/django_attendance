@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',
+    'leave',
+    'reports',
+    'attendance',
 ]
 
 
