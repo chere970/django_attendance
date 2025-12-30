@@ -29,6 +29,7 @@ def RegisterView(request):
 
 @api_view(['POST'])
 def LoginView(request):
+
     serializer = LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.validated_data['user']

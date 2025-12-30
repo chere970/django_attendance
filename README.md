@@ -2,7 +2,7 @@
 
 This repository contains a full-stack Attendance Management application.
 
-- Backend: Express + Prisma (MongoDB)
+- Backend: Django
 - Frontend: Next.js (app router) + React + TypeScript
 
 ## Overview

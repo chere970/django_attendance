@@ -17,7 +17,7 @@ import { request } from "http";
 import { json } from "stream/consumers";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/accounts/signup/";
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/signup/";
 // const DJANGO_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://localhost:8000";
 export function SignupForm({
   className,
@@ -33,6 +33,7 @@ export function SignupForm({
     role: "employee",
     department: "",
   });
+
   // const [photo, setPhoto] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
