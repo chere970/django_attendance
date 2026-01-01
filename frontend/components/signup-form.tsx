@@ -30,7 +30,7 @@ export function SignupForm({
     employee_id: "",
     email: "",
     password: "",
-    role: "employee",
+    role: "",
     department: "",
   });
 
