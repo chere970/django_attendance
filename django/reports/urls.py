@@ -6,6 +6,7 @@ urlpatterns = [
     path('reports/', ReportView, name='reports'),
     path('leave-requests/', LeaveRequestView, name='leave-requests'),
     path('request/add/', SendLeaveRequest, name='send-leave-request'),
+    path('leave-request/history', LeaveRequestView, name='leave-request-history')
 
 
 ]
