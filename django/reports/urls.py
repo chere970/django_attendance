@@ -5,5 +5,7 @@ from .views import SendLeaveRequest
 urlpatterns = [
     path('reports/', ReportView, name='reports'),
     path('leave-requests/', LeaveRequestView, name='leave-requests'),
-    path('leave-request/add/', SendLeaveRequest, name='send-leave-request'),
+    path('request/add/', SendLeaveRequest, name='send-leave-request'),
+
+
 ]
